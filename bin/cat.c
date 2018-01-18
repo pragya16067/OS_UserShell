@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-//The 2 options implemented are cat - (or cat with no option) and cat -n
+//The 2 options implemented are cat - (or cat with no option) and cat -n and cat -E
 
 int main(int argc, char* argv[]) {
 	int c;
@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
 	char *path;
 	char stdin[1024];
 	char *n= "-n";
+	char *E= "-E";
 	
 	if(argc==1)
 	{
@@ -46,13 +47,35 @@ int main(int argc, char* argv[]) {
 			int i=1;
 			path = argv[2];
 			file = fopen(path, "r");
-			char str[100];
+			
 			if (file) {
-				while ((fgets(str,100,file)) != NULL) {
-					printf("\t%d   %s",i,str);
+				while ((fgets(stdin,1024,file)) != NULL) {
+					printf("\t%d   %s",i,stdin);
 					i++;
 				}
 			    fclose(file);
+			}
+			else
+			{
+				printf("Sorry, file not found\n");
+				return 1;
+			}
+		}
+		else if(strcmp(argv[1],E) == 0) //option is -E with one filename
+		{
+			//to print $ at end of each line
+			path = argv[2];
+			file = fopen(path, "r");
+			if (file) {
+				while ((fgets(stdin,1024,file)) != NULL) {
+					if(strcmp(stdin,"\n")==0) //empty line 
+						{printf("$\n");}
+					else {
+						strtok(stdin,"\n");
+						printf("%s$\n",stdin);
+						}
+					}
+				fclose(file);
 			}
 			else
 			{
@@ -95,10 +118,9 @@ int main(int argc, char* argv[]) {
 			int i=1;
 			path = argv[2];
 			file = fopen(path, "r");
-			char str[100];
 			if (file) {
-				while ((fgets(str,100,file)) != NULL) {
-					printf("\t%d   %s",i,str);
+				while ((fgets(stdin,1024,file)) != NULL) {
+					printf("\t%d   %s",i,stdin);
 					i++;
 				}
 			    fclose(file);
@@ -111,11 +133,52 @@ int main(int argc, char* argv[]) {
 			path = argv[3];
 			file = fopen(path, "r");
 			if (file) {
-				while ((fgets(str,100,file)) != NULL) {
-					printf("\t%d   %s",i,str);
+				while ((fgets(stdin,1024,file)) != NULL) {
+					printf("\t%d   %s",i,stdin);
 					i++;
 				}
 			    fclose(file);
+			}
+			else
+			{
+				printf("Sorry, file not found\n");
+				return 1;
+			}
+		}
+		else if(strcmp(argv[1],E) == 0) //option is -E with 2 filenames
+		{
+			//to print $ at end of all lines
+
+			path = argv[2];
+			file = fopen(path, "r");
+			if (file) {
+				while ((fgets(stdin,1024,file)) != NULL) {
+					if(strcmp(stdin,"\n")==0) //empty line 
+						{printf("$\n");}
+					else {
+						strtok(stdin,"\n");
+						printf("%s$\n",stdin);
+						}
+					}
+				fclose(file);
+			}
+			else
+			{
+				printf("Sorry, file not found\n");
+				return 1;
+			}
+			path = argv[3];
+			file = fopen(path, "r");
+			if (file) {
+				while ((fgets(stdin,1024,file)) != NULL) {
+					if(strcmp(stdin,"\n")==0) //empty line 
+						{printf("$\n");}
+					else {
+						strtok(stdin,"\n");
+						printf("%s$\n",stdin);
+						}
+					}
+				fclose(file);
 			}
 			else
 			{
