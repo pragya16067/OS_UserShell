@@ -1,7 +1,7 @@
 /**
 	AUTHOR : PRAGYA PRAKASH
 	ROLL NO. : 2016067
-	LAB 2 Refresher Module
+	OS Assignment 0
 **/
 
 #include <stdio.h>
@@ -35,14 +35,11 @@ char **split(char *str)
 		size_ptr = size_ptr + 1;
 		if ((size_ptr) * sizeof(char *) >= 1024)	//if size exceeds the already allocated memory, reallocate more memory
 		{
-			tokenizedStr =
-			    realloc(tokenizedStr,
-				    (size_ptr + 1) * sizeof(char *));
+			tokenizedStr =realloc(tokenizedStr,(size_ptr + 1) * sizeof(char *));
 		}
 
 		if (tokenizedStr == '\0') {	/* Some failure in realloc() */
-			printf
-			    ("Some error occurred in allocating memory. Try again.\n");
+			printf("Some error occurred in allocating memory. Try again.\n");
 			break;
 		}
 
@@ -64,7 +61,7 @@ char **split(char *str)
 
 /*
 
-The main function is the infinite loop of the shell which terminates with the exit command and executes user inputted command
+The main function is the infinite loop of the shell which terminates with the exit command and executes user inputted commands
 
 */
 
@@ -92,33 +89,63 @@ int main()
 
 		//printf("the command is %s\n", command);
 
-		//builtin commands, namely exit, cd and help
+		//Internal commands, namely exit, cd, pwd, echo, history and help
 
 		char exit[] = "exit";
 		char cd[] = "cd";
+		char pwd[] = "pwd";
+		char echo[] = "echo";
+		char history[] = "history";
 		char help[] = "help";
+		
+
 
 		//quit if command is exit
 		if (strcmp(command, exit) == 0) {
 			break;
 		}
+		//print present working directory if command is cwd
+		else if(strcmp(command,pwd) == 0)
+		{
+			if(arg[1]=='\0') //no options of pwd
+			{
+				char *cwd = get_current_dir_name();
+				if (cwd == NULL) {
+					//error occured in get_current_dir_name
+					printf("Error occured in getting the current working directory\n");
+					continue;
+				}
+				printf("%s\n",cwd);
+			}
+		}
 		//change directory if the command is cd
 		else if (strcmp(command, cd) == 0) {
 			if (arg[1] != NULL) {
-				if (chdir(arg[1]) != 0)	//some error in executing chdir(Change directory) command
+				if(strcmp(arg[1],"~")==0 || strcmp(arg[1],"~pragya")==0)
 				{
-					printf
-					    ("some error in executing command cd\n");
+					chdir("/home/pragya");
 					continue;
 				}
+				
+				else
+				{
+					if (chdir(arg[1]) != 0)	//some error in executing chdir(Change directory) command
+					{
+						printf("Some error in executing command cd\n");
+						continue;
+					}		
+				}
 			} else {	//Directory name to change to has not been specified
-				printf
-				    ("Please enter a directory path to change to\n");
+				chdir("/home/pragya");
 				continue;
 			}
 		}
+		//print the trailing text if the command is echo
+		else if(strcmp(command,echo) ==0)
+		{
+		
+		}
 		//give some help advice if the command is help
-
 		else if (strcmp(command, help) == 0) {
 			printf
 			    ("This is Pragya's designed shell. Wait for the prompt to appear and type in the command you wish to execute.\n");
@@ -130,39 +157,65 @@ int main()
 			//execute other commands
 			int forkResult = fork();
 			if (forkResult == 0) {
-				//this is the child
+				//this is the child process
 				//printf("the command is %s\n", command);
-			char ls[] = "ls"; char mkdir[] = "mkdir";
-			if(strcmp(command,ls)) {
 				
-				char path[] = "/home/pragya/Desktop/shell/bin/ls";
-				if (execv(path, arg) == -1) {
-					//Some error in execl
-					printf
-					    ("Could not find command or some error in executing command %s\n",
-					     command);
+				if(strcmp(command,"ls")==0) {
+				
+					char path[] = "/home/pragya/Desktop/shell/bin/ls";
+					if (execv(path, arg) == -1) {
+						//Some error in execl
+						printf
+						    ("Could not find command or some error in executing command %s\n",
+						     command);
+					}
 				}
-			}
-			else if(strcmp(command,mkdir)) {
-				char path[] = "/home/pragya/Desktop/shell/bin/mkdir";
-				if (execv(path, arg) == -1) {
-					//Some error in execl
-					printf
-					    ("Could not find command or some error in executing command %s\n",
-					     command);
+				else if(strcmp(command,"mkdir")==0) {
+					char path[] = "/home/pragya/Desktop/shell/bin/mkdir";
+					if (execv(path, arg) == -1) {
+						//Some error in execl
+						printf
+						    ("Could not find command or some error in executing command %s\n",
+						     command);
+					}
 				}
-			}
-			/*else
-			{
-				if (execvp(command, arg) == -1) {
-					//Some error in execvp
-					printf
-					    ("Could not find command or some error in executing command %s\n",
-					     command);
+				else if(strcmp(command,"cat")==0) {
+					char path[] = "/home/pragya/Desktop/shell/bin/cat";
+					if (execv(path, arg) == -1) {
+						//Some error in execl
+						printf
+						    ("Could not find command or some error in executing command %s\n",
+						     command);
+					}
 				}
-			}*/
+				else if(strcmp(command,"date")==0) {
+					char path[] = "/home/pragya/Desktop/shell/bin/date";
+					if (execv(path, arg) == -1) {
+						//Some error in execl
+						printf
+						    ("Could not find command or some error in executing command %s\n",
+						     command);
+					}
+				}
+				else if(strcmp(command,"rm")==0) {
+					char path[] = "/home/pragya/Desktop/shell/bin/rm";
+					if (execv(path, arg) == -1) {
+						//Some error in execl
+						printf
+						    ("Could not find command or some error in executing command %s\n",
+						     command);
+					}
+				}
+				else
+				{
+					printf("This command does not exist.\n");
+					continue;
+				}
+			
 
-			} else if (forkResult < 0) {
+			} 
+			
+			else if (forkResult < 0) {
 				//fork has failed
 				printf("Fork has failed\n");
 				continue;
