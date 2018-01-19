@@ -69,7 +69,7 @@ int main()
 {
 
 	while (1) {
-		char *cwd = get_current_dir_name();
+		char *cwd = (char *)get_current_dir_name();
 		if (cwd == NULL) {
 			//error occured in get_current_dir_name
 			printf
@@ -98,7 +98,8 @@ int main()
 		char history[] = "history";
 		char help[] = "help";
 		
-
+		//a string to store the latest cd command, and use it for "cd -"
+		char *prevCD;
 
 		//quit if command is exit
 		if (strcmp(command, exit) == 0) {
@@ -109,7 +110,7 @@ int main()
 		{
 			if(arg[1]=='\0') //no options of pwd
 			{
-				char *cwd = get_current_dir_name();
+				char *cwd = (char *)get_current_dir_name();
 				if (cwd == NULL) {
 					//error occured in get_current_dir_name
 					printf("Error occured in getting the current working directory\n");
@@ -123,19 +124,36 @@ int main()
 			if (arg[1] != NULL) {
 				if(strcmp(arg[1],"~")==0 || strcmp(arg[1],"~pragya")==0)
 				{
+					prevCD = (char *)get_current_dir_name();
 					chdir("/home/pragya");
 					continue;
 				}
-				
+				else if(strcmp(arg[1],"-") == 0)
+				{
+					printf("%s \n",prevCD);
+					char new[200];
+					strcpy(new,prevCD);
+					
+					prevCD=(char *)get_current_dir_name();
+					
+					if (chdir(new) != 0)	//some error in executing chdir(Change directory) command
+					{
+						printf("Some error in executing command cd\n");
+						continue;
+					}
+				}
 				else
 				{
+					prevCD = (char *)get_current_dir_name();
 					if (chdir(arg[1]) != 0)	//some error in executing chdir(Change directory) command
 					{
 						printf("Some error in executing command cd\n");
 						continue;
-					}		
+					}
+							
 				}
 			} else {	//Directory name to change to has not been specified
+				prevCD = (char *)get_current_dir_name();
 				chdir("/home/pragya");
 				continue;
 			}
