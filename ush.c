@@ -67,7 +67,10 @@ The main function is the infinite loop of the shell which terminates with the ex
 
 int main()
 {
-
+	//An array of strings to maintain history of the shell
+	char ShellHistory[1024][512];
+	int histptr=0;
+	
 	while (1) {
 		char *cwd = (char *)get_current_dir_name();
 		if (cwd == NULL) {
@@ -81,7 +84,12 @@ int main()
 		//read the inputs
 		char input[1024];
 		gets(input);
-
+		
+		//Store the instruction in the shell's history
+		strcpy( ShellHistory[histptr] , input );
+		//printf("%s \n",ShellHistory[histptr]);
+		histptr++;
+		
 		//find the command and arguments
 		//and store it in an array of Strings
 		char **arg = split(input);
@@ -134,21 +142,29 @@ int main()
 					char new[200];
 					strcpy(new,prevCD);
 					
-					prevCD=(char *)get_current_dir_name();
+					char *newValForPrev=(char *)get_current_dir_name();
 					
 					if (chdir(new) != 0)	//some error in executing chdir(Change directory) command
 					{
 						printf("Some error in executing command cd\n");
 						continue;
 					}
+					else
+					{//no error in cd
+						prevCD = (char *) newValForPrev;
+					}
 				}
 				else
 				{
-					prevCD = (char *)get_current_dir_name();
+					char *newValForPrev = (char *)get_current_dir_name();
 					if (chdir(arg[1]) != 0)	//some error in executing chdir(Change directory) command
 					{
 						printf("Some error in executing command cd\n");
 						continue;
+					}
+					else
+					{//no error in cd
+						prevCD = (char *) newValForPrev;
 					}
 							
 				}
@@ -161,7 +177,36 @@ int main()
 		//print the trailing text if the command is echo
 		else if(strcmp(command,echo) ==0)
 		{
-		
+			if(strcmp(arg[1],"-n") == 0) //option is -n
+			{	//Do not print the trailing newline character
+				int i=2;
+				while(arg[i] !='\0') {
+					printf("%s ",arg[i]);
+					i++;
+				}
+			}
+			else if(strcmp(arg[1],"-e") ==0) //option is -e
+			{
+				//enable interpretation of backslash escapes
+				
+			}
+			else
+			{
+				int i=1;
+				while(arg[i] !='\0') {
+					printf("%s ",arg[i]);
+					i++;
+				}printf("\n");
+			}
+		}
+		//print the history of commands in shell
+		else if(strcmp(command,history) ==0)
+		{
+			int i=0;
+			for(i=0; i<histptr; i++)
+			{
+				printf(" %d  %s\n",i+1,ShellHistory[i]);
+			}
 		}
 		//give some help advice if the command is help
 		else if (strcmp(command, help) == 0) {
