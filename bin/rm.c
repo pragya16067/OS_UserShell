@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-//Options : -i and -v
+//Options : -i, -d and -v
 
 int main(int argc, char *argv[]) {
 	char *path;
@@ -55,6 +55,24 @@ int main(int argc, char *argv[]) {
 			{
 				remove(path);
 				printf("removed '%s'\n",path);
+			}
+			else
+			{
+				printf("Cannot remove '%s': No such file\n",path);
+				return 1;
+			}
+			
+				
+		}
+		else if(strcmp(argv[1],"-d")==0) //option is -d
+		{
+			path = argv[2];
+			//remove the file
+			
+			f= fopen(path, "r");
+			if(f != NULL) //the file exists 
+			{
+				remove(path);
 			}
 			else
 			{
