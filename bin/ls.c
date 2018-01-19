@@ -108,6 +108,7 @@ int main(int argc, char * argv[]) {
 		else
 		{
 			printf("Please enter a valid option.\n");
+			return 1;
 		}
 	}
 	return 0;
