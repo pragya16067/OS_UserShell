@@ -188,7 +188,35 @@ int main()
 			else if(strcmp(arg[1],"-e") ==0) //option is -e
 			{
 				//enable interpretation of backslash escapes
-				
+				int i = 2;
+				int j=0;
+				char *echowords[20];
+				while(arg[i] != '\0')
+				{
+					char *ptr=strtok(arg[i], "\\");
+					
+					while(ptr!='\0')
+					{
+						echowords[j++]=ptr;
+						ptr=strtok(NULL, "\\");
+					}
+					i++;
+				}
+				echowords[j] = '\0';
+				j=0;
+				while(echowords[j] != '\0')
+				{
+					char *word = echowords[j];
+					if(*word == 'n') {
+						word++;
+						printf("\n%s",word);
+					}
+					else
+					{
+						printf("%s",word);
+					}
+					j++;
+				}printf("\n");
 			}
 			else
 			{
