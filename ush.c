@@ -121,7 +121,7 @@ int main()
 				char *cwd = (char *)get_current_dir_name();
 				if (cwd == NULL) {
 					//error occured in get_current_dir_name
-					printf("Error occured in getting the current working directory\n");
+					printf("cd: Error occured in getting the current working directory\n");
 					continue;
 				}
 				printf("%s\n",cwd);
@@ -285,7 +285,7 @@ int main()
 			} else {
 				//this is the parent
 				//wait till the child has completed
-				forkResult = wait(NULL);
+				wait(NULL);
 			}
 		}
 	}
