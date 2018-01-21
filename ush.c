@@ -207,9 +207,17 @@ int main()
 				while(echowords[j] != '\0')
 				{
 					char *word = echowords[j];
-					if(*word == 'n') {
+					if(*word == 'n') { //provide newline
 						word++;
 						printf("\n%s",word);
+					}
+					else if(*word == 't') { //provide tab
+						word++;
+						printf("\t%s",word);
+					}
+					else if(*word == 'c') { //produce no further output
+						word++;
+						break;
 					}
 					else
 					{

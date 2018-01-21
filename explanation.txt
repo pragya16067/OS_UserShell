@@ -48,6 +48,8 @@ Valid Test cases:
 
 		echo Hello World
 		echo -e Hello\\nWorld
+		echo -e Hello\\tWorld
+		echo -e Hello\\tWorld\\cNotToBePrinted
 		echo -n Hello World!!
 
 
