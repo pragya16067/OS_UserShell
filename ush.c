@@ -263,7 +263,7 @@ int main()
 				
 					char path[] = "/home/pragya/Desktop/shell/bin/ls";
 					if (execv(path, arg) == -1) {
-						//Some error in execl
+						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
 						     command);
@@ -272,7 +272,7 @@ int main()
 				else if(strcmp(command,"mkdir")==0) {
 					char path[] = "/home/pragya/Desktop/shell/bin/mkdir";
 					if (execv(path, arg) == -1) {
-						//Some error in execl
+						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
 						     command);
@@ -281,7 +281,7 @@ int main()
 				else if(strcmp(command,"cat")==0) {
 					char path[] = "/home/pragya/Desktop/shell/bin/cat";
 					if (execv(path, arg) == -1) {
-						//Some error in execl
+						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
 						     command);
@@ -290,7 +290,7 @@ int main()
 				else if(strcmp(command,"date")==0) {
 					char path[] = "/home/pragya/Desktop/shell/bin/date";
 					if (execv(path, arg) == -1) {
-						//Some error in execl
+						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
 						     command);
@@ -299,7 +299,7 @@ int main()
 				else if(strcmp(command,"rm")==0) {
 					char path[] = "/home/pragya/Desktop/shell/bin/rm";
 					if (execv(path, arg) == -1) {
-						//Some error in execl
+						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
 						     command);
