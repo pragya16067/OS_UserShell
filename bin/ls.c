@@ -6,9 +6,10 @@
 //Implemented options -a,-x and -U
 
 int main(int argc, char * argv[]) {
-	struct dirent **listnames;
-	int i,n;
-	n = scandir(".", &listnames, 0, alphasort); //get the number of files and directories in pwd
+
+	struct dirent **listnames; //holds the files and directory names inside the pwd
+	int i;
+	int n = scandir(".", &listnames, 0, alphasort); //get the number of files and directories in pwd
 	//also sorts the names alphabetically into array of strings listnames using function alphasort
 	if(n<0) //some error occured in scandir
 	{
@@ -110,6 +111,11 @@ int main(int argc, char * argv[]) {
 			printf("Please enter a valid option.\n");
 			return 1;
 		}
+	}
+	else
+	{
+		printf("Please eneter a valid option");
+		return 1;
 	}
 	return 0;
 }

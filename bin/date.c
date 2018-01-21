@@ -3,6 +3,8 @@
 #include <sys/stat.h>
 #include <time.h>
 
+//options implemented are -u and -r
+
 int main(int argc, char *argv[]) {
 
 	char *u= "-u"; char *r="-r";
