@@ -1,0 +1,119 @@
+NAME: Pragya Prakash
+ROLL NO. : 2016067
+OPERATING SYSTEMS : Assignment 0
+
+ush is a shell emulator program for a linux bash shell. It supports various internal(commands which are predefined in the shell program) and external(commands which have a binary file executing them) commands.
+
+Working :
+	1. A prompt appears for user to enter command.
+	2. The command entered by user is parsed into an array of strings, called arg
+	3. If the command user wants is an internal command, then the implementation of that command executes
+	4. Otherwise, the parent process forks a child and through exec() system call executes the binary for that command, if it exists.
+	5. The parent wairts for the child to complete execution, and once done, that command terminates
+	6. This continues until the user enters exit at which the shell exits.
+
+The various internal commands it supports are listed:
+	1. cd : with provisions of all options of cd like cd ., cd .., cd ~, cd ~username, cd, cd -
+	2. echo : with options -e(to enable interpretation of backslash escapes) and -n(not output trailing newline character)
+	3. history
+	4. pwd
+	5. exit
+	6. help
+
+The various external commands it supports are listed:
+	1. ls : with options -a(to show hidden files), -x(to list entries in a line), -U(to not sort the output alphabetically)
+	2. mkdir : with options -p(to create the parent directories too) and -v(verbose: give explicit written output)
+	3. rm : with options -i(interactive remove, confirm from user), -v(verbose) and -d(remove empty directories)
+	4. cat : with options <no option> or - (to read from stdin and write to stdout), -n(to display line numbers), -E(to mark end of line 			with '$' sign) for 1 or 2 filenames as input.
+	5. date : with options -u(to display the time in UTC format) and -r(to display the last modified time of a given file)
+
+Error Handling:
+	1. Basic error handling has been done for each and every command, wherein if any invalid input is given, an appropriate error message 			appears and that command terminates.
+	2. Also, if any command or option of an implemented command is punched in, an appropriate error message is diaplayed.
+	3. For any error in fork() or exec() system calls, error messages are displayed.
+
+Assumptions made:
+	1. In command cat with no options or cat -, I assumed use will have only 1 line of input by user which will be printed in stdout 		and the command shall terminate.
+	
+Valid Test cases:
+
+		cd
+		cd Desktop
+		cd ~
+		cd -
+		cd shell/bin
+		cd ..
+		cd .
+
+
+		echo Hello World
+		echo -e Hello\\nWorld
+		echo -n Hello World!!
+
+
+		pwd
+
+		help
+
+		ls
+		ls -a
+		ls -x
+		ls -U
+
+		mkdir test1
+		mkdir -p bin/test2/test3/test4
+		mkdir -v test5
+		ls
+
+		rm test1
+		rm -d test5
+		cd bin/test2/test3
+		rm -v test4
+		cd ..
+		rm -i test3
+		cd ..
+		rm -d test2
+
+		date
+		date -u
+		date -r mkdir.c
+
+		cat date.c
+		cat date.c mkdir.c
+		cat -n date.c
+		cat -n ls.c cat.c
+		cat -E date.c
+		cat -E ls.c mkdir.c
+		cat
+		cat -
+
+		history
+
+		exit
+
+Invalid Test Cases: (To check error handling capacity)
+
+		xyz abc
+
+		cd abcc
+		cd -o ged
+
+		ls -lx
+		
+		mkdir -c hello
+		mkdir bin
+		
+		rm xyz
+		rm -rf hello
+		
+		date -x
+		date -r
+		
+		cat -x hello
+		cat -n wyz.txt
+
+Acknowledgement to references:
+
+	For the purpose of this assignment, to familiarise with C syntax, libraries and commands for implementation of various commands, I 		took references from Stack Overflow, Wikipedia, ComputerHope.org and publications.opengroup.org
+
+
