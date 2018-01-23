@@ -14,7 +14,7 @@ Working :
 
 The various internal commands it supports are listed:
 	1. cd : with provisions of all options of cd like cd ., cd .., cd ~, cd ~username, cd, cd -
-	2. echo : with options -e(to enable interpretation of backslash escapes) and -n(not output trailing newline character)
+	2. echo : with options -E(default), -e(to enable interpretation of backslash escapes) and -n(not output trailing newline character)
 	3. history
 	4. pwd
 	5. exit
@@ -33,7 +33,9 @@ Error Handling:
 	3. For any error in fork() or exec() system calls, error messages are displayed.
 
 Assumptions made:
-	1. In command cat with no options or cat -, I assumed use will have only 1 line of input by user which will be printed in stdout 		and the command shall terminate.
+	1. All commands will be of the form : command_name [option] arguments
+	2. A mix of options is not implemented in my shell program
+	3. In command cat with no options or cat -, I assumed use will have only 1 line of input by user which will be printed in stdout 		and the command shall terminate.
 	
 Valid Test cases:
 
@@ -47,6 +49,7 @@ Valid Test cases:
 
 
 		echo Hello World
+		echo -E Hello\\nWorld
 		echo -e Hello\\nWorld
 		echo -e Hello\\tWorld
 		echo -e Hello\\tWorld\\cNotToBePrinted
@@ -93,7 +96,7 @@ Valid Test cases:
 
 		exit
 
-Invalid Test Cases: (To check error handling capacity)
+Test Cases: (To check error handling capacity)
 
 		xyz abc
 

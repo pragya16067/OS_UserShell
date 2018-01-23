@@ -1,0 +1,52 @@
+cd ..
+cd
+cd ..
+pwd
+cd -
+cd -
+cd -
+cd Desktop
+cd shell
+ls
+ls -x
+ls -a
+ls -l
+history
+exit
+cd
+cd -
+ls
+ls -x
+ls -y
+bashvdk
+history
+exit
+exit
+ls 
+cd ..
+cd .
+cd -
+ls
+ls -x
+history
+exit
+cd ..
+ls
+ls -x
+ls -a
+ls -s
+ls -r
+ls -U
+cat
+cat -n mkdir.c
+cat -n 1.c
+date
+date -u
+mkdir hello
+mkdir hello
+ls
+rm -d hello
+ls
+history
+pwd
+exit

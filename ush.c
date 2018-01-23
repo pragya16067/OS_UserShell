@@ -67,11 +67,12 @@ The main function is the infinite loop of the shell which terminates with the ex
 
 int main()
 {
-	//An array of strings to maintain history of the shell
-	char ShellHistory[1024][512];
-	int histptr=0;
 	
-	while (1) {
+	char *BaseDir = (char *)get_current_dir_name();
+	char RelPath[100];
+	
+	while (1) 
+	{
 		char *cwd = (char *)get_current_dir_name();
 		if (cwd == NULL) {
 			//error occured in get_current_dir_name
@@ -86,9 +87,16 @@ int main()
 		gets(input);
 		
 		//Store the instruction in the shell's history
-		strcpy( ShellHistory[histptr] , input );
-		//printf("%s \n",ShellHistory[histptr]);
-		histptr++;
+		strcpy(RelPath, BaseDir);
+		strcat(RelPath, "/History.txt");
+		FILE *histFile = fopen(RelPath, "a");
+		if(histFile == NULL) {
+			printf("Cannot open History file\n");
+			return 1;
+		}
+		fprintf( histFile, "%s\n", input);
+		fclose(histFile);
+		
 		
 		//find the command and arguments
 		//and store it in an array of Strings
@@ -216,7 +224,6 @@ int main()
 						printf("\t%s",word);
 					}
 					else if(*word == 'c') { //produce no further output
-						word++;
 						break;
 					}
 					else
@@ -224,6 +231,14 @@ int main()
 						printf("%s",word);
 					}
 					j++;
+				}printf("\n");
+			}
+			else if(strcmp(arg[1],"-E") == 0) //option is -E
+			{	//Default echo command
+				int i=2;
+				while(arg[i] !='\0') {
+					printf("%s ",arg[i]);
+					i++;
 				}printf("\n");
 			}
 			else
@@ -238,11 +253,18 @@ int main()
 		//print the history of commands in shell
 		else if(strcmp(command,history) ==0)
 		{
-			int i=0;
-			for(i=0; i<histptr; i++)
+			int i=1;
+			strcpy(RelPath, BaseDir);
+			strcat(RelPath, "/History.txt");
+			FILE *histPtr = fopen(RelPath,"r");
+			char str[1000];
+			
+			while (fgets(str, sizeof str, histPtr) != '\0' ) /* read a line */
 			{
-				printf(" %d  %s\n",i+1,ShellHistory[i]);
+				printf("\t%d\t",i++);
+				fputs(str,stdout); /* print the line */
 			}
+			fclose(histPtr);
 		}
 		//give some help advice if the command is help
 		else if (strcmp(command, help) == 0) {
@@ -258,11 +280,11 @@ int main()
 			if (forkResult == 0) {
 				//this is the child process
 				//printf("the command is %s\n", command);
-				
+				strcpy(RelPath, BaseDir);
+
 				if(strcmp(command,"ls")==0) {
-				
-					char path[] = "/home/pragya/Desktop/shell/bin/ls";
-					if (execv(path, arg) == -1) {
+					strcat(RelPath, "/bin/ls");
+					if (execv(RelPath, arg) == -1) {
 						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
@@ -270,8 +292,8 @@ int main()
 					}
 				}
 				else if(strcmp(command,"mkdir")==0) {
-					char path[] = "/home/pragya/Desktop/shell/bin/mkdir";
-					if (execv(path, arg) == -1) {
+					strcat(RelPath, "/bin/mkdir");
+					if (execv(RelPath, arg) == -1) {
 						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
@@ -279,8 +301,8 @@ int main()
 					}
 				}
 				else if(strcmp(command,"cat")==0) {
-					char path[] = "/home/pragya/Desktop/shell/bin/cat";
-					if (execv(path, arg) == -1) {
+					strcat(RelPath, "/bin/cat");
+					if (execv(RelPath, arg) == -1) {
 						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
@@ -288,8 +310,8 @@ int main()
 					}
 				}
 				else if(strcmp(command,"date")==0) {
-					char path[] = "/home/pragya/Desktop/shell/bin/date";
-					if (execv(path, arg) == -1) {
+					strcat(RelPath, "/bin/date");
+					if (execv(RelPath, arg) == -1) {
 						//Some error in execv
 						printf
 						    ("Could not find command or some error in executing command %s\n",
@@ -325,4 +347,5 @@ int main()
 			}
 		}
 	}
+
 }
